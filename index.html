@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Applied Statistics | Nisha N Gowda | 01FE24BAR016</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.26.0/plotly.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0f1f;
+  --bg2: #0d1428;
+  --card: #1e293b;
+  --card2: #162032;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --accent: #3b82f6;
+  --accent2: #60a5fa;
+  --accent3: #93c5fd;
+  --green: #10b981;
+  --purple: #8b5cf6;
+  --orange: #f59e0b;
+  --border: rgba(59,130,246,0.2);
+  --glow: rgba(59,130,246,0.15);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(59,130,246,0.06) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(139,92,246,0.04) 0%,transparent 60%);pointer-events:none;z-index:0;}
+ 
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(10,15,31,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 1rem;}
+.nav-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;gap:0;overflow-x:auto;scrollbar-width:none;}
+.nav-inner::-webkit-scrollbar{display:none;}
+.nav-brand{font-family:'Space Mono',monospace;font-size:0.75rem;color:var(--accent);white-space:nowrap;padding:1rem 1rem 1rem 0;border-right:1px solid var(--border);margin-right:0.5rem;flex-shrink:0;}
+.nav-btn{background:none;border:none;color:var(--muted);font-family:'Syne',sans-serif;font-size:0.78rem;font-weight:600;padding:1rem 0.75rem;cursor:pointer;white-space:nowrap;transition:color 0.2s;border-bottom:2px solid transparent;letter-spacing:0.03em;}
+.nav-btn:hover,.nav-btn.active{color:var(--accent2);border-bottom-color:var(--accent);}
+ 
+/* PAGES */
+.page{display:none;max-width:1100px;margin:0 auto;padding:2.5rem 1.5rem;position:relative;z-index:1;}
+.page.active{display:block;}
+ 
+/* HEADINGS */
+h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.1;margin-bottom:1rem;}
+h1 span{background:linear-gradient(135deg,var(--accent2),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+h2{font-size:1.5rem;font-weight:700;margin:2.5rem 0 1rem;color:var(--accent2);}
+h3{font-size:1.1rem;font-weight:700;margin:1.5rem 0 0.5rem;color:var(--text);}
+h4{font-size:0.95rem;font-weight:700;margin:1rem 0 0.4rem;color:var(--accent3);}
+p{line-height:1.7;color:var(--muted);margin-bottom:0.8rem;}
+ 
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-bottom:1.5rem;}
+.card-sm{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:1rem;}
+ 
+/* HERO */
+.hero{text-align:center;padding:3rem 0 2rem;}
+.hero-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--accent);background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);border-radius:20px;padding:0.3rem 1rem;margin-bottom:1.5rem;letter-spacing:0.1em;}
+.hero p{max-width:600px;margin:0 auto 1.5rem;font-size:1.05rem;}
+ 
+/* FORMULA BOX */
+.formula{background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.25);border-radius:8px;padding:1rem 1.5rem;margin:1rem 0;font-family:'JetBrains Mono',monospace;font-size:0.9rem;overflow-x:auto;}
+.formula-label{font-size:0.7rem;font-weight:700;letter-spacing:0.1em;color:var(--accent);text-transform:uppercase;margin-bottom:0.4rem;}
+ 
+/* TAGS */
+.tag{display:inline-block;font-size:0.7rem;font-weight:700;letter-spacing:0.08em;padding:0.2rem 0.6rem;border-radius:4px;margin:0.2rem;}
+.tag-blue{background:rgba(59,130,246,0.15);color:var(--accent2);}
+.tag-green{background:rgba(16,185,129,0.15);color:var(--green);}
+.tag-purple{background:rgba(139,92,246,0.15);color:var(--purple);}
+ 
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:0.9rem;margin:1rem 0;}
+th{background:rgba(59,130,246,0.15);color:var(--accent2);padding:0.7rem 1rem;text-align:left;font-weight:700;font-size:0.8rem;letter-spacing:0.05em;}
+td{padding:0.6rem 1rem;border-bottom:1px solid rgba(255,255,255,0.05);color:var(--muted);}
+tr:hover td{background:rgba(59,130,246,0.04);}
+ 
+/* LIST */
+ul.styled{list-style:none;padding:0;}
+ul.styled li{padding:0.4rem 0 0.4rem 1.5rem;color:var(--muted);position:relative;line-height:1.6;}
+ul.styled li::before{content:'▸';position:absolute;left:0;color:var(--accent);}
+ 
+/* PLOT */
+.plot-box{background:var(--card2);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:1.5rem 0;}
+.plot-title{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;color:var(--accent);text-transform:uppercase;padding:0.8rem 1rem 0;}
+ 
+/* SVG DIAGRAM */
+.diagram-box{display:flex;justify-content:center;margin:1.5rem 0;}
+ 
+/* STATS GRID */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:0.75rem;margin:1rem 0;}
+.stat-box{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:1rem;text-align:center;}
+.stat-val{font-family:'Space Mono',monospace;font-size:1.3rem;font-weight:700;color:var(--accent2);}
+.stat-lbl{font-size:0.7rem;color:var(--muted);margin-top:0.3rem;letter-spacing:0.05em;}
+ 
+/* LAB */
+.lab-hero{background:linear-gradient(135deg,rgba(59,130,246,0.12),rgba(139,92,246,0.08));border:1px solid var(--border);border-radius:12px;padding:2rem;margin-bottom:2rem;}
+.lab-meta{display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem;}
+.lab-meta-item{font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--accent3);}
+.pdf-btn{display:inline-flex;align-items:center;gap:0.5rem;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:0.6rem 1.2rem;font-family:'Syne',sans-serif;font-weight:700;font-size:0.85rem;cursor:pointer;text-decoration:none;transition:background 0.2s;}
+.pdf-btn:hover{background:var(--accent2);}
+.pdf-info{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:1rem;font-family:'JetBrains Mono',monospace;font-size:0.82rem;color:var(--green);margin:1rem 0;}
+.pdf-warn{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.3);border-radius:8px;padding:1rem;color:var(--orange);font-size:0.85rem;margin:1rem 0;}
+.pdf-canvas-wrap{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:1rem;margin:1rem 0;overflow:auto;max-height:500px;text-align:center;}
+canvas.pdf-canvas{max-width:100%;border-radius:6px;}
+ 
+/* STEP */
+.step{display:flex;gap:1rem;margin-bottom:1rem;}
+.step-num{flex-shrink:0;width:2rem;height:2rem;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;}
+.step-content{flex:1;}
+ 
+/* FOOTER */
+footer{text-align:center;padding:2rem;border-top:1px solid var(--border);color:var(--muted);font-size:0.82rem;font-family:'JetBrains Mono',monospace;margin-top:3rem;position:relative;z-index:1;}
+footer span{color:var(--accent2);}
+ 
+/* SLIDER */
+input[type=range]{width:100%;accent-color:var(--accent);}
+ 
+/* INTERACTIVE */
+.interactive-box{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:1.5rem;margin:1.5rem 0;}
+.ci-result{font-family:'Space Mono',monospace;font-size:1.1rem;color:var(--green);margin-top:1rem;text-align:center;}
+ 
+@media(max-width:600px){
+  .page{padding:1.5rem 1rem;}
+  h1{font-size:1.8rem;}
+  .card-grid{grid-template-columns:1fr;}
+  .stats-row{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+ 
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand">AS // KLE Tech</div>
+    <button class="nav-btn active" onclick="showPage('intro')">Intro</button>
+    <button class="nav-btn" onclick="showPage('ch1')">Ch 1</button>
+    <button class="nav-btn" onclick="showPage('ch2')">Ch 2</button>
+    <button class="nav-btn" onclick="showPage('ch3')">Ch 3</button>
+    <button class="nav-btn" onclick="showPage('ch4')">Ch 4</button>
+    <button class="nav-btn" onclick="showPage('lab1')">Lab 1</button>
+    <button class="nav-btn" onclick="showPage('lab2')">Lab 2</button>
+    <button class="nav-btn" onclick="showPage('lab3')">Lab 3</button>
+    <button class="nav-btn" onclick="showPage('lab4')">Lab 4</button>
+  </div>
+</nav>
+ 
+<!-- ===== INTRO ===== -->
+<div id="page-intro" class="page active">
+  <!-- Student Identity Card -->
+  <div style="background:linear-gradient(135deg,rgba(59,130,246,0.18),rgba(139,92,246,0.12));border:1.5px solid rgba(59,130,246,0.4);border-radius:14px;padding:1.5rem 2rem;margin-bottom:2rem;display:flex;flex-wrap:wrap;align-items:center;gap:1.5rem;">
+    <div style="flex:1;min-width:220px;">
+      <div style="font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;color:var(--accent);text-transform:uppercase;margin-bottom:0.5rem;">Student Profile</div>
+      <div style="font-size:1.6rem;font-weight:800;color:var(--text);line-height:1.1;">Nisha N Gowda</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:0.9rem;color:var(--accent2);margin-top:0.4rem;">USN: 01FE24BAR016</div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:0.75rem;">
+      <div style="background:rgba(10,15,31,0.5);border:1px solid var(--border);border-radius:8px;padding:0.6rem 1rem;text-align:center;">
+        <div style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--muted);">Department</div>
+        <div style="font-size:0.85rem;font-weight:700;color:var(--text);">Mathematics</div>
+      </div>
+      <div style="background:rgba(10,15,31,0.5);border:1px solid var(--border);border-radius:8px;padding:0.6rem 1rem;text-align:center;">
+        <div style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--muted);">University</div>
+        <div style="font-size:0.85rem;font-weight:700;color:var(--text);">KLE Tech</div>
+      </div>
+      <div style="background:rgba(10,15,31,0.5);border:1px solid var(--border);border-radius:8px;padding:0.6rem 1rem;text-align:center;">
+        <div style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--muted);">Subject</div>
+        <div style="font-size:0.85rem;font-weight:700;color:var(--accent2);">Applied Statistics</div>
+      </div>
+      <div style="background:rgba(10,15,31,0.5);border:1px solid var(--border);border-radius:8px;padding:0.6rem 1rem;text-align:center;">
+        <div style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--muted);">Lab Assessments</div>
+        <div style="font-size:0.85rem;font-weight:700;color:var(--green);">4 Completed</div>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="hero">
+    <div class="hero-badge">KLE Technological University · Department of Mathematics</div>
+    <h1><span>Applied Statistics</span><br>in Automation Systems</h1>
+    <p>A comprehensive exploration of statistical methods powering modern manufacturing, robotics, and intelligent automation.</p>
+  </div>
+  <div class="card-grid">
+    <div class="card-sm">
+      <h4>📊 Data Analysis</h4>
+      <p>Characterize sensor data, identify outliers, and summarize process measurements using descriptive statistics.</p>
+    </div>
+    <div class="card-sm">
+      <h4>🎲 Probability</h4>
+      <p>Model uncertainty in automated systems using Bayes' theorem, conditional probability, and total probability law.</p>
+    </div>
+    <div class="card-sm">
+      <h4>📈 Distributions</h4>
+      <p>Apply Binomial, Poisson, and Normal distributions to real-world defect analysis and quality control.</p>
+    </div>
+    <div class="card-sm">
+      <h4>🔬 Inference</h4>
+      <p>Make data-driven decisions using confidence intervals, hypothesis testing, and sampling theory.</p>
+    </div>
+  </div>
+ 
+  <div class="card">
+    <h2>Why Applied Statistics in Automation?</h2>
+    <p>Modern automation systems generate vast amounts of sensor data. Statistical reasoning allows engineers to distinguish signal from noise, predict failures before they occur, and maintain tight quality tolerances. From CNC machining tolerances measured in microns to robotic gripper reliability, every metric is governed by probability.</p>
+    <ul class="styled">
+      <li>Detect machine drift before it causes defects (SPC — Statistical Process Control)</li>
+      <li>Optimize maintenance schedules using failure probability models</li>
+      <li>Validate sensor calibration through confidence interval analysis</li>
+      <li>Design tolerances based on actual process variation data</li>
+      <li>Correlate process parameters with output quality metrics</li>
+    </ul>
+  </div>
+ 
+  <div class="card-grid">
+    <div class="card">
+      <h3>Course Structure</h3>
+      <table>
+        <tr><th>Chapter</th><th>Topic</th></tr>
+        <tr><td>1</td><td>Data Characterization</td></tr>
+        <tr><td>2</td><td>Probabilistic Modeling</td></tr>
+        <tr><td>3</td><td>Statistical Distributions</td></tr>
+        <tr><td>4</td><td>Statistical Inference</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>Lab Assessments</h3>
+      <ul class="styled">
+        <li><strong>Lab 1:</strong> CNC Shaft Diameter — Descriptive Statistics</li>
+        <li><strong>Lab 2:</strong> Robotic Gripper — Bayesian Analysis</li>
+        <li><strong>Lab 3:</strong> PCB Assembly Line — Distributions & Correlation</li>
+        <li><strong>Lab 4:</strong> Statistical Inference — Hypothesis Testing & CI</li>
+      </ul>
+      <br>
+      <div class="tag tag-blue">Analytical Solutions</div>
+      <div class="tag tag-green">Python / GeoGebra</div>
+      <div class="tag tag-purple">Plotly Visualizations</div>
+    </div>
+  </div>
+</div>
+ 
+<!-- ===== CHAPTER 1 ===== -->
+<div id="page-ch1" class="page">
+  <div class="hero-badge">Chapter 1</div>
+  <h1><span>Data Characterization</span><br>in Automation Systems</h1>
+ 
+  <div class="card-grid">
+    <div class="card-sm">
+      <h4>Continuous Variable</h4>
+      <p>Can take any value in a range. E.g., shaft diameter (49.97–50.05 mm), temperature, pressure.</p>
+    </div>
+    <div class="card-sm">
+      <h4>Discrete Variable</h4>
+      <p>Takes countable values. E.g., number of defective PCBs in a batch (0, 1, 2, …).</p>
+    </div>
+    <div class="card-sm">
+      <h4>Qualitative Variable</h4>
+      <p>Categorical, non-numeric. E.g., machine status: "pass", "fail", "warning".</p>
+    </div>
+  </div>
+ 
+  <h2>Measures of Central Tendency</h2>
+  <div class="card">
+    <div class="formula"><div class="formula-label">Mean</div>\[\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i\]</div>
+    <div class="formula"><div class="formula-label">Mean Error (from target T)</div>\[e = \bar{x} - T\]</div>
+    <div class="formula"><div class="formula-label">Median</div>Middle value when data is sorted. For even n: average of two middle values.</div>
+    <div class="formula"><div class="formula-label">Mode</div>Most frequently occurring value in the dataset.</div>
+  </div>
+ 
+  <h2>Measures of Spread</h2>
+  <div class="card">
+    <div class="formula"><div class="formula-label">Variance (sample)</div>\[s^2 = \frac{\sum_{i=1}^{n}(x_i - \bar{x})^2}{n-1}\]</div>
+    <div class="formula"><div class="formula-label">Standard Deviation</div>\[s = \sqrt{s^2}\]</div>
+    <div class="formula"><div class="formula-label">Coefficient of Variation</div>\[CV = \frac{s}{\bar{x}} \times 100\%\]</div>
+    <div class="formula"><div class="formula-label">Tolerance</div>Allowable deviation from target: \(T \pm \delta\). Process is capable if all values lie within tolerance.</div>
+  </div>
+ 
+  <h2>Quartiles, IQR & Outliers</h2>
+  <div class="card">
+    <div class="formula"><div class="formula-label">IQR</div>\[\text{IQR} = Q_3 - Q_1\]</div>
+    <div class="formula"><div class="formula-label">Outlier Fences (Tukey)</div>\[\text{Lower} = Q_1 - 1.5 \times \text{IQR}, \quad \text{Upper} = Q_3 + 1.5 \times \text{IQR}\]</div>
+    <p><strong>Robust measures:</strong> Median and IQR are resistant to outliers, unlike mean and standard deviation.</p>
+  </div>
+ 
+  <!-- Dataset from Lab 1 -->
+  <h2>Interactive Visualizations — CNC Shaft Data (200 observations)</h2>
+  <div class="stats-row" id="ch1-stats"></div>
+  <div class="plot-box">
+    <div class="plot-title">Histogram — Shaft Diameter Distribution</div>
+    <div id="ch1-hist" style="height:340px;"></div>
+  </div>
+  <div class="plot-box">
+    <div class="plot-title">Boxplot — Shaft Diameter with Quartiles</div>
+    <div id="ch1-box" style="height:280px;"></div>
+  </div>
+ 
+  <div class="card">
+    <h3>Analysis Results</h3>
+    <ul class="styled">
+      <li>Mean ≈ 50.0087 mm — very close to target 50.00 mm (mean error = 0.0087 mm)</li>
+      <li>Standard Deviation ≈ 0.0217 mm — extremely precise machining</li>
+      <li>CV ≈ 0.0433% — negligible relative variation</li>
+      <li>Q1 = 49.99, Q2 = 50.01, Q3 = 50.03, IQR = 0.04 mm</li>
+      <li>No outliers detected — all values within Tukey fences [49.93, 50.09]</li>
+      <li>Process is capable: all values within 50.00 ± 0.05 mm tolerance</li>
+    </ul>
+  </div>
+</div>
+ 
+<!-- ===== CHAPTER 2 ===== -->
+<div id="page-ch2" class="page">
+  <div class="hero-badge">Chapter 2</div>
+  <h1><span>Probabilistic Modeling</span><br>of Uncertainty</h1>
+ 
+  <div class="card-grid">
+    <div class="card-sm">
+      <h4>Sample Space (Ω)</h4>
+      <p>Set of all possible outcomes of a random experiment. E.g., Ω = {Failure, Normal} for a machine status check.</p>
+    </div>
+    <div class="card-sm">
+      <h4>Event</h4>
+      <p>A subset of the sample space. E.g., A = {machine fails} ⊆ Ω.</p>
+    </div>
+    <div class="card-sm">
+      <h4>Probability Axioms</h4>
+      <p>0 ≤ P(A) ≤ 1, P(Ω) = 1, for mutually exclusive events: P(A∪B) = P(A) + P(B).</p>
+    </div>
+  </div>
+ 
+  <h2>Core Rules</h2>
+  <div class="card">
+    <div class="formula"><div class="formula-label">Addition Rule</div>\[P(A \cup B) = P(A) + P(B) - P(A \cap B)\]</div>
+    <div class="formula"><div class="formula-label">Multiplication Rule</div>\[P(A \cap B) = P(A) \cdot P(B|A)\]</div>
+    <div class="formula"><div class="formula-label">Conditional Probability</div>\[P(A|B) = \frac{P(A \cap B)}{P(B)}\]</div>
+    <div class="formula"><div class="formula-label">Law of Total Probability</div>\[P(B) = \sum_{i} P(B|A_i) \cdot P(A_i)\]</div>
+    <div class="formula"><div class="formula-label">Bayes' Theorem</div>\[P(A|B) = \frac{P(B|A) \cdot P(A)}{P(B)}\]</div>
+  </div>
+ 
+  <h2>Bayesian Reasoning — Lab 2 Example</h2>
+  <div class="card">
+    <p>A robotic gripper monitoring system: P(Failure) = 0.04, P(Warning|Failure) = 0.92, P(Warning|Normal) = 0.05.</p>
+    <div class="diagram-box">
+      <svg viewBox="0 0 600 300" width="100%" style="max-width:600px;font-family:'Syne',sans-serif;">
+        <!-- Root -->
+        <circle cx="80" cy="150" r="30" fill="rgba(59,130,246,0.2)" stroke="#3b82f6" stroke-width="2"/>
+        <text x="80" y="154" text-anchor="middle" fill="#93c5fd" font-size="11" font-weight="700">Gripper</text>
+        <!-- F branch -->
+        <line x1="110" y1="130" x2="230" y2="70" stroke="#ef4444" stroke-width="1.5"/>
+        <circle cx="260" cy="60" r="28" fill="rgba(239,68,68,0.15)" stroke="#ef4444" stroke-width="2"/>
+        <text x="260" y="56" text-anchor="middle" fill="#fca5a5" font-size="10" font-weight="700">Fail</text>
+        <text x="260" y="70" text-anchor="middle" fill="#fca5a5" font-size="10">0.04</text>
+        <text x="170" y="85" fill="#ef4444" font-size="10">P(F)=0.04</text>
+        <!-- W|F -->
+        <line x1="288" y1="48" x2="400" y2="25" stroke="#60a5fa" stroke-width="1.5"/>
+        <rect x="402" y="10" width="120" height="30" rx="6" fill="rgba(59,130,246,0.15)" stroke="#3b82f6" stroke-width="1.5"/>
+        <text x="462" y="29" text-anchor="middle" fill="#93c5fd" font-size="10">⚠ Warn | P=0.92</text>
+        <!-- NW|F -->
+        <line x1="288" y1="72" x2="400" y2="80" stroke="#6b7280" stroke-width="1.5"/>
+        <rect x="402" y="66" width="120" height="28" rx="6" fill="rgba(107,114,128,0.15)" stroke="#6b7280" stroke-width="1.5"/>
+        <text x="462" y="83" text-anchor="middle" fill="#9ca3af" font-size="10">No Warn | P=0.08</text>
+        <!-- N branch -->
+        <line x1="110" y1="165" x2="230" y2="220" stroke="#10b981" stroke-width="1.5"/>
+        <circle cx="260" cy="235" r="28" fill="rgba(16,185,129,0.15)" stroke="#10b981" stroke-width="2"/>
+        <text x="260" y="231" text-anchor="middle" fill="#6ee7b7" font-size="10" font-weight="700">Normal</text>
+        <text x="260" y="245" text-anchor="middle" fill="#6ee7b7" font-size="10">0.96</text>
+        <text x="170" y="240" fill="#10b981" font-size="10">P(N)=0.96</text>
+        <!-- W|N -->
+        <line x1="288" y1="222" x2="400" y2="190" stroke="#f59e0b" stroke-width="1.5"/>
+        <rect x="402" y="175" width="130" height="28" rx="6" fill="rgba(245,158,11,0.12)" stroke="#f59e0b" stroke-width="1.5"/>
+        <text x="467" y="193" text-anchor="middle" fill="#fcd34d" font-size="10">⚠ False Warn | P=0.05</text>
+        <!-- NW|N -->
+        <line x1="288" y1="248" x2="400" y2="263" stroke="#6b7280" stroke-width="1.5"/>
+        <rect x="402" y="249" width="120" height="28" rx="6" fill="rgba(107,114,128,0.15)" stroke="#6b7280" stroke-width="1.5"/>
+        <text x="462" y="266" text-anchor="middle" fill="#9ca3af" font-size="10">No Warn | P=0.95</text>
+      </svg>
+    </div>
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-val">0.96</div><div class="stat-lbl">P(Normal)</div></div>
+      <div class="stat-box"><div class="stat-val">0.0848</div><div class="stat-lbl">P(Warning)</div></div>
+      <div class="stat-box"><div class="stat-val">43.4%</div><div class="stat-lbl">P(Fail|Warning)</div></div>
+      <div class="stat-box"><div class="stat-val">4.8%</div><div class="stat-lbl">False Warning</div></div>
+    </div>
+    <p>Despite the sensor being highly sensitive (92%), only 43.4% of warnings correspond to actual failures because failures are rare (4%). Engineers should combine warnings with additional diagnostics before scheduling maintenance.</p>
+  </div>
+</div>
+ 
+<!-- ===== CHAPTER 3 ===== -->
+<div id="page-ch3" class="page">
+  <div class="hero-badge">Chapter 3</div>
+  <h1><span>Statistical Distribution</span><br>Models</h1>
+ 
+  <h2>Binomial Distribution</h2>
+  <div class="card">
+    <p>Used for counting successes in n independent Bernoulli trials. E.g., defective PCBs in a batch.</p>
+    <div class="formula"><div class="formula-label">PMF</div>\[P(X=k) = \binom{n}{k} p^k (1-p)^{n-k}\]</div>
+    <div class="formula"><div class="formula-label">Mean & Variance</div>\[\mu = np, \quad \sigma^2 = np(1-p)\]</div>
+  </div>
+  <div class="plot-box">
+    <div class="plot-title">Binomial PMF — n=80, p=0.05 (PCB Defects)</div>
+    <div id="ch3-binom" style="height:300px;"></div>
+  </div>
+ 
+  <h2>Poisson Distribution</h2>
+  <div class="card">
+    <p>Models rare events in a fixed interval. E.g., robotic welding faults per shift (λ=3.2).</p>
+    <div class="formula"><div class="formula-label">PMF</div>\[P(X=k) = \frac{e^{-\lambda}\lambda^k}{k!}\]</div>
+    <div class="formula"><div class="formula-label">Mean = Variance</div>\[\mu = \sigma^2 = \lambda\]</div>
+  </div>
+  <div class="plot-box">
+    <div class="plot-title">Poisson PMF — λ=3.2 (Faults per Shift)</div>
+    <div id="ch3-poisson" style="height:300px;"></div>
+  </div>
+ 
+  <h2>Normal Distribution</h2>
+  <div class="card">
+    <p>Bell-shaped, symmetric distribution fundamental to quality engineering. Placement deviation: X~N(0.50, 0.07²).</p>
+    <div class="formula"><div class="formula-label">PDF</div>\[f(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}\]</div>
+    <div class="formula"><div class="formula-label">Z-score Standardization</div>\[z = \frac{x - \mu}{\sigma}\]</div>
+  </div>
+  <div class="plot-box">
+    <div class="plot-title">Normal PDF — μ=0.50mm, σ=0.07mm (Placement Deviation)</div>
+    <div id="ch3-normal" style="height:320px;"></div>
+  </div>
+ 
+  <h2>Central Limit Theorem</h2>
+  <div class="card">
+    <p>Regardless of the population distribution, the sampling distribution of the sample mean approaches Normal as n increases.</p>
+    <div class="formula"><div class="formula-label">Standard Error</div>\[SE = \frac{\sigma}{\sqrt{n}}\]</div>
+    <div class="formula"><div class="formula-label">CLT — Cycle Time Example</div>\[\mu=15s,\; \sigma=2.4s,\; n=36 \Rightarrow SE=\frac{2.4}{\sqrt{36}}=0.4s\]</div>
+  </div>
+  <div class="plot-box">
+    <div class="plot-title">CLT Demo — Sampling Distribution of Mean (n=36, μ=15, σ=2.4)</div>
+    <div id="ch3-clt" style="height:300px;"></div>
+  </div>
+ 
+  <h2>Covariance & Correlation</h2>
+  <div class="card">
+    <div class="formula"><div class="formula-label">Sample Covariance</div>\[S_{xy} = \frac{\sum_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y})}{n-1}\]</div>
+    <div class="formula"><div class="formula-label">Pearson Correlation Coefficient</div>\[r = \frac{S_{xy}}{S_x \cdot S_y}, \quad -1 \le r \le 1\]</div>
+  </div>
+  <div class="plot-box">
+    <div class="plot-title">Scatter Plot — Torque vs Vibration (r = 0.998)</div>
+    <div id="ch3-scatter" style="height:320px;"></div>
+  </div>
+  <div class="card">
+    <ul class="styled">
+      <li>Covariance = 1.52 (Nm·mm/s) — positive co-variation</li>
+      <li>Correlation r ≈ 0.998 — near-perfect positive linear relationship</li>
+      <li>Higher assembly torque strongly predicts higher vibration amplitude</li>
+      <li>This enables predictive maintenance: monitor torque to anticipate vibration issues</li>
+    </ul>
+  </div>
+</div>
+ 
+<!-- ===== CHAPTER 4 ===== -->
+<div id="page-ch4" class="page">
+  <div class="hero-badge">Chapter 4</div>
+  <h1><span>Statistical Inference</span><br>for Automation Decisions</h1>
+ 
+  <div class="card-grid">
+    <div class="card-sm">
+      <h4>Population</h4>
+      <p>All possible measurements of interest. E.g., all shafts the CNC machine will ever produce.</p>
+    </div>
+    <div class="card-sm">
+      <h4>Sample</h4>
+      <p>A subset drawn from the population for analysis. E.g., 200 measured shaft diameters from a production run.</p>
+    </div>
+  </div>
+ 
+  <h2>Confidence Intervals</h2>
+  <div class="card">
+    <p>A confidence interval (CI) is a range of plausible values for a population parameter, constructed from sample data.</p>
+    <div class="formula"><div class="formula-label">CI — σ known (Z-interval)</div>\[\bar{x} \pm z_{\alpha/2} \cdot \frac{\sigma}{\sqrt{n}}\]</div>
+    <div class="formula"><div class="formula-label">CI — σ unknown (t-interval)</div>\[\bar{x} \pm t_{\alpha/2, n-1} \cdot \frac{s}{\sqrt{n}}\]</div>
+    <div class="formula"><div class="formula-label">Common Z-values</div>90% CI: z = 1.645 &nbsp;|&nbsp; 95% CI: z = 1.960 &nbsp;|&nbsp; 99% CI: z = 2.576</div>
+  </div>
+ 
+  <h3>Interactive CI Calculator</h3>
+  <div class="interactive-box">
+    <p style="color:var(--text);font-weight:600;margin-bottom:1rem;">CNC Shaft Diameter — Confidence Interval Explorer</p>
+    <label style="font-size:0.85rem;color:var(--muted);">Confidence Level: <strong id="ci-level-val">95</strong>%</label><br>
+    <input type="range" min="80" max="99" value="95" id="ci-slider" oninput="updateCI()">
+    <br><br>
+    <label style="font-size:0.85rem;color:var(--muted);">Sample Size n: <strong id="ci-n-val">200</strong></label><br>
+    <input type="range" min="10" max="500" value="200" id="ci-n-slider" oninput="updateCI()">
+    <div class="ci-result" id="ci-result"></div>
+  </div>
+ 
+  <h2>Hypothesis Testing</h2>
+  <div class="card">
+    <p>A formal procedure to decide whether sample evidence supports a claim about a population parameter.</p>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content"><strong>State Hypotheses:</strong> H₀ (null) and H₁ (alternative). E.g., H₀: μ = 50.00 mm vs H₁: μ ≠ 50.00 mm</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content"><strong>Choose significance level α</strong> (typically 0.05 or 0.01)</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content"><strong>Compute test statistic:</strong>
+        <div class="formula" style="margin-top:0.5rem;">\[t = \frac{\bar{x} - \mu_0}{s/\sqrt{n}}\]</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content"><strong>Calculate p-value:</strong> probability of observing the test statistic (or more extreme) under H₀</div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-content"><strong>Decision:</strong> If p-value &lt; α → reject H₀ (sufficient evidence against null). Otherwise → fail to reject H₀.</div>
+    </div>
+  </div>
+ 
+  <div class="card">
+    <h3>Example: CNC Shaft Hypothesis Test</h3>
+    <p>H₀: μ = 50.00 mm, H₁: μ ≠ 50.00 mm. Given x̄ = 50.0087, s = 0.02166, n = 200.</p>
+    <div class="formula">
+      \[t = \frac{50.0087 - 50.00}{0.02166/\sqrt{200}} = \frac{0.0087}{0.00153} \approx 5.69\]
+    </div>
+    <p>With |t| = 5.69 >> t_{0.025, 199} ≈ 1.972, we reject H₀ at α=0.05. The mean diameter is statistically different from 50.00 mm — though practically, the 0.0087 mm deviation is within tolerance.</p>
+  </div>
+ 
+  <div class="plot-box">
+    <div class="plot-title">CI Visualization — Shaft Diameter (95% Confidence Interval)</div>
+    <div id="ch4-ci-plot" style="height:280px;"></div>
+  </div>
+</div>
+ 
+<!-- ===== LAB 1 ===== -->
+<div id="page-lab1" class="page">
+  <div class="hero-badge">Lab Assessment No. 1</div>
+  <h1><span>CNC Shaft Diameter</span><br>Statistical Analysis</h1>
+  <div class="lab-hero">
+    <div class="lab-meta">
+      <span class="lab-meta-item">Name: Nisha N Gowda</span>
+      <span class="lab-meta-item">USN: 01FE24BAR016</span>
+      <span class="lab-meta-item">Subject: Applied Statistics</span>
+    </div>
+    <div style="margin-top:1rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
+      <a href="pdfs/lab1.pdf" target="_blank" class="pdf-btn">📄 Open PDF</a>
+    </div>
+  </div>
+  <div id="lab1-pdf-info"></div>
+  <canvas id="lab1-canvas" class="pdf-canvas" style="display:none;"></canvas>
+ 
+  <div class="card">
+    <h2>Problem Statement</h2>
+    <p>A CNC milling machine produces precision shafts with target diameter of <strong>50.00 mm</strong>. During 200 consecutive production cycles, diameters were measured using a calibrated digital micrometer. Perform comprehensive statistical analysis and assess process capability.</p>
+    <h3>Tasks</h3>
+    <ul class="styled">
+      <li>Calculate mean diameter and mean error from target value</li>
+      <li>Determine median, variance, standard deviation, and coefficient of variation</li>
+      <li>Calculate Q1, Q2, Q3 and IQR; identify outliers using IQR method</li>
+      <li>Plot histogram and boxplot</li>
+      <li>Comment on process accuracy, precision, stability, and capability</li>
+    </ul>
+  </div>
+ 
+  <div class="card">
+    <h2>Results Summary</h2>
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-val">50.0087</div><div class="stat-lbl">Mean (mm)</div></div>
+      <div class="stat-box"><div class="stat-val">0.0087</div><div class="stat-lbl">Mean Error (mm)</div></div>
+      <div class="stat-box"><div class="stat-val">50.01</div><div class="stat-lbl">Median (mm)</div></div>
+      <div class="stat-box"><div class="stat-val">0.000469</div><div class="stat-lbl">Variance (mm²)</div></div>
+      <div class="stat-box"><div class="stat-val">0.02166</div><div class="stat-lbl">Std Dev (mm)</div></div>
+      <div class="stat-box"><div class="stat-val">0.0433%</div><div class="stat-lbl">CV</div></div>
+    </div>
+    <table>
+      <tr><th>Quartile</th><th>Value (mm)</th><th>Note</th></tr>
+      <tr><td>Q1</td><td>49.99</td><td>25th percentile</td></tr>
+      <tr><td>Q2</td><td>50.01</td><td>Median</td></tr>
+      <tr><td>Q3</td><td>50.03</td><td>75th percentile</td></tr>
+      <tr><td>IQR</td><td>0.04</td><td>Q3 − Q1</td></tr>
+      <tr><td>Lower Fence</td><td>49.93</td><td>Q1 − 1.5×IQR</td></tr>
+      <tr><td>Upper Fence</td><td>50.09</td><td>Q3 + 1.5×IQR</td></tr>
+    </table>
+    <p><span class="tag tag-green">✓ No Outliers Detected</span> All observations lie within [49.93, 50.09] mm.</p>
+  </div>
+ 
+  <div class="plot-box">
+    <div class="plot-title">Lab 1 — Histogram of Shaft Diameters (200 measurements)</div>
+    <div id="lab1-hist" style="height:340px;"></div>
+  </div>
+  <div class="plot-box">
+    <div class="plot-title">Lab 1 — Boxplot with Tolerance Bands</div>
+    <div id="lab1-box" style="height:320px;"></div>
+  </div>
+ 
+  <div class="card">
+    <h2>Engineering Analysis</h2>
+    <ul class="styled">
+      <li><strong>Accuracy:</strong> Mean (50.0087 mm) is very close to target (50.00 mm), mean error = 0.0087 mm — highly accurate</li>
+      <li><strong>Precision:</strong> Low SD (0.02166 mm) and CV (0.0433%) — excellent repeatability</li>
+      <li><strong>Stability:</strong> No outliers; symmetric distribution around target — statistically stable</li>
+      <li><strong>Capability:</strong> All values within 50.00 ± 0.05 mm — machine is capable of maintaining tolerance</li>
+    </ul>
+  </div>
+</div>
+ 
+<!-- ===== LAB 2 ===== -->
+<div id="page-lab2" class="page">
+  <div class="hero-badge">Lab Assessment No. 2</div>
+  <h1><span>Robotic Gripper</span><br>Bayesian Analysis</h1>
+  <div class="lab-hero">
+    <div class="lab-meta">
+      <span class="lab-meta-item">Name: Nisha N Gowda</span>
+      <span class="lab-meta-item">USN: 01FE24BAR016</span>
+      <span class="lab-meta-item">Subject: Applied Statistics</span>
+    </div>
+    <div style="margin-top:1rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
+      <a href="pdfs/lab2.pdf" target="_blank" class="pdf-btn">📄 Open PDF</a>
+    </div>
+  </div>
+  <div id="lab2-pdf-info"></div>
+ 
+  <div class="card">
+    <h2>Problem Statement</h2>
+    <p>An automated assembly line uses robotic grippers to assemble electronic control units. Historical records show:</p>
+    <table>
+      <tr><th>Parameter</th><th>Symbol</th><th>Value</th></tr>
+      <tr><td>Probability of failure during shift</td><td>P(F)</td><td>0.04</td></tr>
+      <tr><td>P(Warning | Failure)</td><td>P(W|F)</td><td>0.92</td></tr>
+      <tr><td>P(False Warning | Normal)</td><td>P(W|N)</td><td>0.05</td></tr>
+    </table>
+  </div>
+ 
+  <div class="card">
+    <h2>Solution Using Bayes' Theorem</h2>
+    <div class="formula"><div class="formula-label">1. P(Normal)</div>\[P(N) = 1 - P(F) = 1 - 0.04 = 0.96\]</div>
+    <div class="formula"><div class="formula-label">2. Law of Total Probability — P(Warning)</div>\[P(W) = P(W|F)\cdot P(F) + P(W|N)\cdot P(N) = (0.92)(0.04)+(0.05)(0.96) = 0.0368+0.048 = 0.0848\]</div>
+    <div class="formula"><div class="formula-label">3. Bayes — P(Fail|Warning)</div>\[P(F|W) = \frac{P(W|F)\cdot P(F)}{P(W)} = \frac{0.92 \times 0.04}{0.0848} = \frac{0.0368}{0.0848} \approx 0.4340\]</div>
+    <div class="formula"><div class="formula-label">4. False Warning Probability</div>\[P(\text{False}) = P(W|N)\cdot P(N) = 0.05 \times 0.96 = 0.048\]</div>
+    <div class="formula"><div class="formula-label">5. Monitoring System Reliability</div>\[\text{Reliability} = P(F|W) \times 100\% = 43.4\%\]</div>
+  </div>
+ 
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-val">96%</div><div class="stat-lbl">P(Normal)</div></div>
+    <div class="stat-box"><div class="stat-val">8.48%</div><div class="stat-lbl">P(Warning)</div></div>
+    <div class="stat-box"><div class="stat-val">43.4%</div><div class="stat-lbl">Reliability</div></div>
+    <div class="stat-box"><div class="stat-val">4.8%</div><div class="stat-lbl">False Warnings</div></div>
+  </div>
+ 
+  <div class="plot-box">
+    <div class="plot-title">Probability Breakdown — Warning Signal Analysis</div>
+    <div id="lab2-bar" style="height:340px;"></div>
+  </div>
+ 
+  <div class="card">
+    <h2>Analysis &amp; Conclusions</h2>
+    <ul class="styled">
+      <li>Only 43.39% of warning signals correspond to actual gripper failures</li>
+      <li>Immediate maintenance after every warning leads to unnecessary inspections (56.6% false positives)</li>
+      <li>Despite 92% sensitivity, low failure rate (4%) means false alarms dominate</li>
+      <li>Engineers should combine warnings with additional diagnostics, sensor trends, and historical data before scheduling maintenance</li>
+      <li>To improve reliability, increase prior P(F) threshold or require confirmatory signals</li>
+    </ul>
+  </div>
+</div>
+ 
+<!-- ===== LAB 3 ===== -->
+<div id="page-lab3" class="page">
+  <div class="hero-badge">Lab Assessment No. 3</div>
+  <h1><span>PCB Assembly Line</span><br>Distribution Analysis</h1>
+  <div class="lab-hero">
+    <div class="lab-meta">
+      <span class="lab-meta-item">Name: Nisha N Gowda</span>
+      <span class="lab-meta-item">USN: 01FE24BAR016</span>
+      <span class="lab-meta-item">Subject: Applied Statistics</span>
+    </div>
+    <div style="margin-top:1rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
+      <a href="pdfs/lab3.pdf" target="_blank" class="pdf-btn">📄 Open PDF</a>
+    </div>
+  </div>
+  <div id="lab3-pdf-info"></div>
+ 
+  <!-- Part A -->
+  <div class="card">
+    <h2>Part A — Binomial Distribution (n=80, p=0.05)</h2>
+    <p>A batch of 80 PCBs with historical defect probability 0.05.</p>
+    <div class="formula"><div class="formula-label">Mean</div>\[\mu = np = 80 \times 0.05 = 4\]</div>
+    <div class="formula"><div class="formula-label">Standard Deviation</div>\[\sigma = \sqrt{np(1-p)} = \sqrt{80 \times 0.05 \times 0.95} = \sqrt{3.8} \approx 1.949\]</div>
+    <div class="formula"><div class="formula-label">P(X=4)</div>\[P(X=4) = \binom{80}{4}(0.05)^4(0.95)^{76} \approx 0.2004\]</div>
+    <div class="formula"><div class="formula-label">P(X>5)</div>\[P(X>5) = 1 - P(X \le 5) \approx 0.2108\]</div>
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-val">4.0</div><div class="stat-lbl">Expected Defects</div></div>
+      <div class="stat-box"><div class="stat-val">1.949</div><div class="stat-lbl">Std Dev</div></div>
+      <div class="stat-box"><div class="stat-val">20.04%</div><div class="stat-lbl">P(X=4)</div></div>
+      <div class="stat-box"><div class="stat-val">21.08%</div><div class="stat-lbl">P(X>5)</div></div>
+    </div>
+  </div>
+ 
+  <!-- Part B -->
+  <div class="card">
+    <h2>Part B — Poisson Distribution (λ=3.2)</h2>
+    <p>Robotic welding cell: average 3.2 faults per shift.</p>
+    <div class="formula"><div class="formula-label">P(X=0)</div>\[P(X=0) = e^{-3.2} \approx 0.0408\]</div>
+    <div class="formula"><div class="formula-label">P(X=2)</div>\[P(X=2) = \frac{e^{-3.2}(3.2)^2}{2!} \approx 0.2087\]</div>
+    <div class="formula"><div class="formula-label">P(X>5)</div>\[P(X>5) = 1 - P(X \le 5) \approx 0.1054\]</div>
+  </div>
+ 
+  <!-- Part C -->
+  <div class="card">
+    <h2>Part C — Normal Distribution (μ=0.50mm, σ=0.07mm)</h2>
+    <div class="formula"><div class="formula-label">P(0.40 &lt; X &lt; 0.60)</div>\[z_1 = \frac{0.40-0.50}{0.07}=-1.43, \quad z_2=\frac{0.60-0.50}{0.07}=1.43\]\[P(-1.43 &lt; Z &lt; 1.43) \approx 0.8468 = 84.68\%\]</div>
+    <div class="formula"><div class="formula-label">P(X > 0.65)</div>\[z = \frac{0.65-0.50}{0.07} = 2.14, \quad P(Z>2.14) \approx 0.0162 = 1.62\%\]</div>
+    <div class="formula"><div class="formula-label">95th Percentile</div>\[x = \mu + 1.645\sigma = 0.50 + 1.645 \times 0.07 \approx 0.6152 \text{ mm}\]</div>
+  </div>
+ 
+  <!-- Part D -->
+  <div class="card">
+    <h2>Part D — Central Limit Theorem (μ=15s, σ=2.4s, n=36)</h2>
+    <div class="formula"><div class="formula-label">Standard Error</div>\[SE = \frac{\sigma}{\sqrt{n}} = \frac{2.4}{\sqrt{36}} = \frac{2.4}{6} = 0.4s\]</div>
+    <div class="formula"><div class="formula-label">P(X̄ > 15.5)</div>\[z = \frac{15.5-15}{0.4} = 1.25, \quad P(Z>1.25) \approx 0.1056 = 10.56\%\]</div>
+  </div>
+ 
+  <!-- Part E -->
+  <div class="card">
+    <h2>Part E — Correlation Analysis</h2>
+    <table>
+      <tr><th>Obs</th><th>Torque X (Nm)</th><th>Vibration Y (mm/s)</th></tr>
+      <tr><td>1</td><td>11</td><td>2.0</td></tr>
+      <tr><td>2</td><td>14</td><td>2.6</td></tr>
+      <tr><td>3</td><td>13</td><td>2.4</td></tr>
+      <tr><td>4</td><td>17</td><td>3.3</td></tr>
+      <tr><td>5</td><td>15</td><td>2.9</td></tr>
+      <tr><td>6</td><td>18</td><td>3.6</td></tr>
+    </table>
+    <div class="formula"><div class="formula-label">Results</div>
+      x̄ = 14.67, ȳ = 2.80, S_xy = 1.52, S_x = 2.58, S_y = 0.62<br>
+      \[r = \frac{S_{xy}}{S_x \cdot S_y} = \frac{1.52}{2.58 \times 0.62} \approx 0.998\]
+    </div>
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-val">1.52</div><div class="stat-lbl">Covariance</div></div>
+      <div class="stat-box"><div class="stat-val">0.998</div><div class="stat-lbl">Correlation r</div></div>
+      <div class="stat-box"><div class="stat-val">Strong+</div><div class="stat-lbl">Relationship</div></div>
+    </div>
+  </div>
+ 
+  <div class="plot-box">
+    <div class="plot-title">Lab 3 — All Distributions Comparison</div>
+    <div id="lab3-combined" style="height:360px;"></div>
+  </div>
+ 
+  <div class="card">
+    <h2>Engineering Conclusions</h2>
+    <ul class="styled">
+      <li><strong>Binomial:</strong> Expected 4 defects out of 80 PCBs — stable process with acceptable defect rate</li>
+      <li><strong>Poisson:</strong> Only 4.08% chance of zero faults per shift; infrequent but regular maintenance needed</li>
+      <li><strong>Normal:</strong> 84.68% of placements within ±0.10 mm of nominal — good quality control</li>
+      <li><strong>CLT:</strong> Only 10.56% chance sample mean exceeds 15.5s — consistent production performance</li>
+      <li><strong>Correlation:</strong> r=0.998 — near-perfect torque-vibration relationship; use torque monitoring for predictive maintenance</li>
+    </ul>
+  </div>
+</div>
+ 
+<!-- ===== LAB 4 ===== -->
+<div id="page-lab4" class="page">
+  <div class="hero-badge">Lab Assessment No. 4</div>
+  <h1><span>Statistical Inference</span><br>for Automated Manufacturing</h1>
+  <div class="lab-hero">
+    <p style="color:var(--text);font-weight:600;margin-bottom:0.5rem;">Mathematics Lab Assessment No. 4</p>
+    <div class="lab-meta">
+      <span class="lab-meta-item">Name: Nisha N Gowda</span>
+      <span class="lab-meta-item">USN: 01FE24BAR016</span>
+      <span class="lab-meta-item">Subject: Applied Statistics</span>
+    </div>
+    <div style="margin-top:1rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
+      <a href="pdfs/lab4.pdf" target="_blank" class="pdf-btn">📄 Open PDF</a>
+    </div>
+  </div>
+  <div id="lab4-pdf-info"></div>
+ 
+  <div class="card">
+    <h2>Overview</h2>
+    <p>In automated manufacturing, 100% inspection of every produced component is often impractical due to time, cost, and throughput constraints. Engineers rely on <strong>sample-based statistical inference</strong> to draw conclusions about entire production processes. This lab applies three distinct inference techniques to three different automation datasets.</p>
+    <div class="card-grid">
+      <div class="card-sm"><h4>🔧 Dataset 1 — Robotic Welding</h4><p>Two-sided t-test. Target cycle time 12.0 s. n=20. σ unknown.</p></div>
+      <div class="card-sm"><h4>🧴 Dataset 2 — Filling System</h4><p>One-sided (right-tailed) t-test. Target 500 mL. n=25. σ unknown.</p></div>
+      <div class="card-sm"><h4>⚙️ Dataset 3 — CNC Boring</h4><p>Two-sided Z-test. Target 25.00 mm. n=30. σ=0.05 mm known.</p></div>
+    </div>
+  </div>
+ 
+  <!-- DATASET 1 -->
+  <h2>Dataset 1 — Robotic Welding Station: Cycle Time Validation</h2>
+  <div class="card">
+    <p>After recalibration, 20 cycles are timed. Target μ₀ = 12.0 s. σ unknown → use <strong>two-sided t-test</strong>.</p>
+    <div class="formula"><div class="formula-label">Data (n=20)</div>12.3, 11.8, 12.5, 12.1, 11.9, 12.4, 12.0, 12.2, 11.7, 12.6, 12.1, 12.3, 11.8, 12.0, 12.5, 12.2, 11.9, 12.4, 12.1, 12.3</div>
+    <div class="formula"><div class="formula-label">Sample Statistics</div>x̄ = 12.155 s &nbsp;|&nbsp; s = 0.2585 s &nbsp;|&nbsp; SE = s/√n = 0.2585/√20 = 0.0578 s</div>
+    <div class="formula"><div class="formula-label">95% Confidence Interval (t-interval, df=19)</div>\[\bar{x} \pm t_{0.025,19} \cdot SE = 12.155 \pm 2.093 \times 0.0578 = 12.155 \pm 0.121\]\[\text{CI} = (12.034,\ 12.276) \text{ s}\]</div>
+    <div class="formula"><div class="formula-label">Hypothesis Test (Two-Sided t-test)</div>\[H_0: \mu = 12.0 \quad H_1: \mu \ne 12.0\]\[t = \frac{\bar{x}-\mu_0}{SE} = \frac{12.155-12.0}{0.0578} = 2.682, \quad p\text{-value} = 0.0148\]</div>
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-val">12.155</div><div class="stat-lbl">Sample Mean (s)</div></div>
+      <div class="stat-box"><div class="stat-val">0.2585</div><div class="stat-lbl">Std Dev (s)</div></div>
+      <div class="stat-box"><div class="stat-val">2.682</div><div class="stat-lbl">t-statistic</div></div>
+      <div class="stat-box"><div class="stat-val">0.0148</div><div class="stat-lbl">p-value</div></div>
+      <div class="stat-box"><div class="stat-val" style="color:var(--orange);">REJECT H₀</div><div class="stat-lbl">Decision (α=0.05)</div></div>
+    </div>
+    <p>Target 12.0 s lies <strong>outside</strong> the 95% CI [12.034, 12.276]. p = 0.0148 &lt; 0.05 → <strong>Reject H₀</strong>. Significant evidence the process has drifted. However, the observed shift (0.155 s) is within engineering tolerance (±0.5 s), so corrective action may not be urgent.</p>
+  </div>
+ 
+  <div class="plot-box">
+    <div class="plot-title">Dataset 1 — Cycle Time Distribution with 95% CI</div>
+    <div id="lab4-d1-hist" style="height:320px;"></div>
+  </div>
+ 
+  <!-- DATASET 2 -->
+  <h2>Dataset 2 — Automated Filling System: Volume Compliance</h2>
+  <div class="card">
+    <p>Quality team suspects overfilling. Target μ₀ = 500.0 mL. σ unknown → use <strong>one-sided (right-tailed) t-test</strong>.</p>
+    <div class="formula"><div class="formula-label">Data (n=25)</div>501.2, 500.8, 502.1, 499.5, 501.5, 500.3, 501.8, 500.0, 502.3, 499.7, 501.0, 500.6, 501.9, 500.2, 501.4, 500.9, 501.7, 500.1, 501.3, 500.5, 501.6, 500.4, 501.1, 500.7, 501.2</div>
+    <div class="formula"><div class="formula-label">Sample Statistics</div>x̄ = 500.952 mL &nbsp;|&nbsp; s = 0.7506 mL &nbsp;|&nbsp; SE = 0.1501 mL</div>
+    <div class="formula"><div class="formula-label">95% CI (two-sided for reference, df=24)</div>\[\text{CI} = (500.642,\ 501.262) \text{ mL}\]</div>
+    <div class="formula"><div class="formula-label">One-Sided Hypothesis Test (Right-Tailed)</div>\[H_0: \mu = 500.0 \quad H_1: \mu > 500.0\]\[t = \frac{500.952-500.0}{0.1501} = 6.341, \quad p\text{-value (one-sided)} = 7.4\times10^{-7}\]</div>
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-val">500.952</div><div class="stat-lbl">Sample Mean (mL)</div></div>
+      <div class="stat-box"><div class="stat-val">0.7506</div><div class="stat-lbl">Std Dev (mL)</div></div>
+      <div class="stat-box"><div class="stat-val">6.341</div><div class="stat-lbl">t-statistic</div></div>
+      <div class="stat-box"><div class="stat-val">≈0.000001</div><div class="stat-lbl">p-value</div></div>
+      <div class="stat-box"><div class="stat-val" style="color:var(--orange);">REJECT H₀</div><div class="stat-lbl">Decision</div></div>
+    </div>
+    <p>Extremely strong evidence of overfilling. Overfill = 0.952 mL/bottle. At 10,000 bottles/day → <strong>9,520 mL = 9.5 L wasted per day</strong>. Recalibrate the filling mechanism downward.</p>
+  </div>
+ 
+  <div class="plot-box">
+    <div class="plot-title">Dataset 2 — Filling Volume Distribution (One-Sided Test)</div>
+    <div id="lab4-d2-hist" style="height:320px;"></div>
+  </div>
+ 
+  <!-- DATASET 3 -->
+  <h2>Dataset 3 — CNC Precision Boring: Diameter Tolerance</h2>
+  <div class="card">
+    <p>CNC boring machine, target 25.00 mm, σ = 0.05 mm (known) → use <strong>two-sided Z-test</strong>.</p>
+    <div class="formula"><div class="formula-label">Data (n=30)</div>25.02, 24.98, 25.01, 25.03, 24.99, 25.00, 25.04, 24.97, 25.01, 25.02, 25.00, 24.99, 25.03, 25.01, 24.98, 25.02, 25.00, 24.97, 25.01, 25.03, 25.02, 24.99, 25.00, 25.01, 24.98, 25.03, 25.02, 25.00, 24.99, 25.01</div>
+    <div class="formula"><div class="formula-label">Sample Statistics</div>x̄ = 25.0053 mm &nbsp;|&nbsp; σ = 0.05 mm (known) &nbsp;|&nbsp; SE = 0.05/√30 = 0.00913 mm</div>
+    <div class="formula"><div class="formula-label">95% CI (Z-interval, σ known)</div>\[\bar{x} \pm z_{0.025} \cdot SE = 25.0053 \pm 1.96 \times 0.00913 = 25.0053 \pm 0.01789\]\[\text{CI} = (24.9874,\ 25.0232) \text{ mm}\]</div>
+    <div class="formula"><div class="formula-label">Two-Sided Z-Test</div>\[H_0: \mu = 25.00 \quad H_1: \mu \ne 25.00\]\[Z = \frac{25.0053 - 25.00}{0.00913} = 0.5842, \quad p\text{-value} = 0.559\]</div>
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-val">25.0053</div><div class="stat-lbl">Sample Mean (mm)</div></div>
+      <div class="stat-box"><div class="stat-val">0.05</div><div class="stat-lbl">Known σ (mm)</div></div>
+      <div class="stat-box"><div class="stat-val">0.584</div><div class="stat-lbl">Z-statistic</div></div>
+      <div class="stat-box"><div class="stat-val">0.559</div><div class="stat-lbl">p-value</div></div>
+      <div class="stat-box"><div class="stat-val" style="color:var(--green);">FAIL TO REJECT</div><div class="stat-lbl">Decision</div></div>
+    </div>
+    <p>Target 25.00 mm lies <strong>inside</strong> the CI [24.987, 25.023]. p = 0.559 &gt; 0.05 → Fail to reject H₀. <strong>No significant evidence of diameter shift.</strong> CNC process is on target. 99% CI: [24.9818, 25.0288] mm. Required sample size for ±0.01 mm margin = <strong>97</strong>.</p>
+  </div>
+ 
+  <div class="plot-box">
+    <div class="plot-title">Dataset 3 — CNC Bore Diameter with CI Bands</div>
+    <div id="lab4-d3-scatter" style="height:320px;"></div>
+  </div>
+ 
+  <!-- Error Analysis -->
+  <h2>Error Analysis & Sample Size Determination</h2>
+  <div class="card">
+    <div class="formula"><div class="formula-label">Type I Error (α)</div>\[\alpha = 0.05 \Rightarrow 5\% \text{ risk of concluding drift when there is none (false alarm → unnecessary recalibration)}\]</div>
+    <div class="formula"><div class="formula-label">Type II Error (β)</div>Cannot compute without specifying the true alternative mean. Requires power analysis.</div>
+    <div class="formula"><div class="formula-label">Required Sample Size</div>\[n = \left(\frac{z_{\alpha/2} \cdot \sigma}{E}\right)^2\]For 95% CI, σ=0.05, E=0.01: \(n = \left(\frac{1.96 \times 0.05}{0.01}\right)^2 = 9.8^2 = 96.04 \Rightarrow n = 97\]</div>
+    <div class="formula"><div class="formula-label">Power Analysis (Dataset 1 — if true mean = 12.3 s)</div>Effect size (Cohen's d) = 1.161 &nbsp;|&nbsp; Approx. power (1−β) ≈ 0.9994 &nbsp;|&nbsp; P(Type II Error) ≈ 0.0006</div>
+  </div>
+ 
+  <!-- Comparison -->
+  <h2>Comparative Summary — All Three Datasets</h2>
+  <div class="card">
+    <table>
+      <tr><th>Dataset</th><th>n</th><th>Mean</th><th>s / σ</th><th>Test</th><th>p-value</th><th>Decision</th></tr>
+      <tr><td>Welding (12.0 s)</td><td>20</td><td>12.155</td><td>0.2585</td><td>two-sided t</td><td>0.0148</td><td><span class="tag tag-purple">Reject H₀</span></td></tr>
+      <tr><td>Filling (500 mL)</td><td>25</td><td>500.952</td><td>0.7506</td><td>one-sided t</td><td>0.000001</td><td><span class="tag tag-purple">Reject H₀</span></td></tr>
+      <tr><td>CNC Boring (25 mm)</td><td>30</td><td>25.0053</td><td>0.05*</td><td>two-sided Z</td><td>0.559</td><td><span class="tag tag-green">Fail to Reject</span></td></tr>
+    </table>
+    <p style="font-size:0.8rem;margin-top:0.5rem;">* known population σ</p>
+  </div>
+ 
+  <div class="plot-box">
+    <div class="plot-title">95% CI Deviation from Target — All Three Datasets</div>
+    <div id="lab4-comparison" style="height:340px;"></div>
+  </div>
+ 
+  <div class="card">
+    <h2>Engineering Conclusions</h2>
+    <ul class="styled">
+      <li><strong>Dataset 1 (Welding):</strong> Process drifted post-recalibration (mean 12.155 s vs target 12.0 s). Statistically significant but within ±0.5 s engineering tolerance — monitor but no immediate action required</li>
+      <li><strong>Dataset 2 (Filling):</strong> Severe overfilling confirmed (p ≈ 0). 0.952 mL average overfill = 9.5 L wasted per 10,000 bottles/day. Immediate recalibration required</li>
+      <li><strong>Dataset 3 (CNC):</strong> No evidence of diameter shift. Process on target. CNC boring machine performing within specification</li>
+      <li><strong>Sample size rule:</strong> For ±0.01 mm precision at 95% confidence with σ=0.05, need n=97 observations</li>
+    </ul>
+  </div>
+</div>
+ 
+<footer>
+  <span>Nisha N Gowda</span> &nbsp;|&nbsp; USN: <span>01FE24BAR016</span> &nbsp;|&nbsp; Applied Statistics &nbsp;|&nbsp; KLE Technological University
+</footer>
+ 
+<script>
+// ===== NAVIGATION =====
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo(0,0);
+  setTimeout(() => initPage(id), 100);
+}
+ 
+const initialized = {};
+function initPage(id) {
+  if (initialized[id]) return;
+  initialized[id] = true;
+  if (id === 'ch1') initCh1();
+  if (id === 'ch3') initCh3();
+  if (id === 'ch4') initCh4();
+  if (id === 'lab1') initLab1();
+  if (id === 'lab2') initLab2();
+  if (id === 'lab3') initLab3();
+  if (id === 'lab4') initLab4();
+}
+ 
+// ===== DATASET (Lab 1 — 200 CNC measurements) =====
+const shaftData = [
+49.98,50.02,50.01,49.99,50.03,49.97,50.04,50.00,50.01,49.98,
+50.02,49.99,50.03,50.00,49.97,50.05,50.01,49.99,50.02,49.98,
+50.01,50.03,49.99,50.00,50.02,49.98,50.04,50.01,49.99,50.03,
+50.00,50.02,49.97,50.01,50.04,49.99,50.02,50.00,50.03,49.98,
+50.01,49.99,50.04,50.02,49.97,50.03,50.00,50.01,49.98,50.02,
+50.04,49.99,50.01,50.03,50.00,49.98,50.02,50.01,49.99,50.05,
+50.00,50.03,49.97,50.02,50.01,49.98,50.04,50.00,49.99,50.03,
+50.02,49.98,50.01,50.04,50.00,49.99,50.02,50.03,49.97,50.01,
+50.00,50.02,49.99,50.04,50.01,49.98,50.03,50.00,49.99,50.02,
+50.04,50.01,49.97,50.03,50.00,50.02,49.98,50.01,50.04,49.99,
+50.03,50.00,50.01,49.98,50.02,50.04,49.99,50.03,50.00,50.01,
+49.97,50.02,50.04,49.99,50.03,50.01,50.00,49.98,50.02,50.05,
+50.01,49.99,50.04,50.02,49.98,50.03,50.00,50.01,49.99,50.04,
+50.02,49.97,50.03,50.01,50.00,49.98,50.02,50.04,49.99,50.01,
+50.03,50.00,49.98,50.02,50.05,49.99,50.01,50.04,50.00,50.03,
+49.97,50.02,50.01,49.99,50.04,50.00,50.03,49.98,50.01,50.02,
+50.04,49.99,50.00,50.03,49.98,50.01,50.05,50.02,49.97,50.04,
+50.00,50.01,49.99,50.03,50.02,49.98,50.04,50.00,50.01,49.99,
+50.03,50.02,49.97,50.04,50.00,50.01,49.98,50.03,50.02,49.99,
+50.03,50.02,49.97,50.04,50.00,50.01,49.98,50.03,50.02,49.99
+];
+ 
+const plotLayout = (title, xLabel, yLabel) => ({
+  title: {text:'', font:{size:13}},
+  paper_bgcolor:'transparent', plot_bgcolor:'transparent',
+  font:{color:'#94a3b8', family:'Syne,sans-serif', size:11},
+  xaxis:{title:{text:xLabel,font:{size:11}}, gridcolor:'rgba(255,255,255,0.05)', zerolinecolor:'rgba(255,255,255,0.1)'},
+  yaxis:{title:{text:yLabel,font:{size:11}}, gridcolor:'rgba(255,255,255,0.05)', zerolinecolor:'rgba(255,255,255,0.1)'},
+  margin:{l:50,r:20,t:30,b:50},
+  showlegend:false
+});
+ 
+// ===== CH1 =====
+function initCh1() {
+  const mean = shaftData.reduce((a,b)=>a+b,0)/shaftData.length;
+  const sorted = [...shaftData].sort((a,b)=>a-b);
+  const median = (sorted[99]+sorted[100])/2;
+  const variance = shaftData.reduce((a,b)=>a+Math.pow(b-mean,2),0)/(shaftData.length-1);
+  const sd = Math.sqrt(variance);
+  const cv = (sd/mean*100).toFixed(4);
+ 
+  document.getElementById('ch1-stats').innerHTML = `
+    <div class="stat-box"><div class="stat-val">${mean.toFixed(4)}</div><div class="stat-lbl">Mean (mm)</div></div>
+    <div class="stat-box"><div class="stat-val">${(mean-50).toFixed(4)}</div><div class="stat-lbl">Mean Error (mm)</div></div>
+    <div class="stat-box"><div class="stat-val">${median.toFixed(4)}</div><div class="stat-lbl">Median (mm)</div></div>
+    <div class="stat-box"><div class="stat-val">${variance.toFixed(6)}</div><div class="stat-lbl">Variance (mm²)</div></div>
+    <div class="stat-box"><div class="stat-val">${sd.toFixed(5)}</div><div class="stat-lbl">Std Dev (mm)</div></div>
+    <div class="stat-box"><div class="stat-val">${cv}%</div><div class="stat-lbl">CV</div></div>
+  `;
+ 
+  Plotly.newPlot('ch1-hist', [{
+    x: shaftData, type:'histogram', nbinsx:12,
+    marker:{color:'rgba(59,130,246,0.7)', line:{color:'#60a5fa', width:1}},
+    hovertemplate:'Range: %{x}<br>Count: %{y}<extra></extra>'
+  }], {...plotLayout('','Diameter (mm)','Frequency'), shapes:[
+    {type:'line',x0:mean,x1:mean,y0:0,y1:35,line:{color:'#10b981',width:2,dash:'dash'}},
+    {type:'line',x0:50.00,x1:50.00,y0:0,y1:35,line:{color:'#f59e0b',width:2,dash:'dot'}}
+  ], annotations:[
+    {x:mean,y:32,text:'Mean',showarrow:false,font:{color:'#10b981',size:10}},
+    {x:50.00,y:28,text:'Target',showarrow:false,font:{color:'#f59e0b',size:10}}
+  ]}, {responsive:true,displayModeBar:false});
+ 
+  Plotly.newPlot('ch1-box', [{
+    y: shaftData, type:'box', name:'Shaft Diameter',
+    marker:{color:'rgba(59,130,246,0.5)'}, line:{color:'#3b82f6'},
+    boxmean:true,
+    hovertemplate:'%{y:.4f} mm<extra></extra>'
+  }], {...plotLayout('','','Diameter (mm)'), shapes:[
+    {type:'line',x0:-0.5,x1:0.5,y0:50.05,y1:50.05,line:{color:'#ef4444',width:1.5,dash:'dash'}},
+    {type:'line',x0:-0.5,x1:0.5,y0:49.95,y1:49.95,line:{color:'#ef4444',width:1.5,dash:'dash'}}
+  ], annotations:[
+    {x:0.45,y:50.05,text:'UCL: 50.05',showarrow:false,font:{color:'#ef4444',size:9}},
+    {x:0.45,y:49.95,text:'LCL: 49.95',showarrow:false,font:{color:'#ef4444',size:9}}
+  ]}, {responsive:true,displayModeBar:false});
+ 
+  if (MathJax && MathJax.typeset) MathJax.typeset();
+}
+ 
+// ===== CH3 =====
+function initCh3() {
+  // Binomial n=80, p=0.05
+  const binK = Array.from({length:16},(_,i)=>i);
+  const binPMF = binK.map(k => binom_pmf(80,k,0.05));
+  Plotly.newPlot('ch3-binom',[{
+    x:binK, y:binPMF, type:'bar',
+    marker:{color:binK.map(k=>k===4?'#10b981':'rgba(59,130,246,0.65)'), line:{color:'#60a5fa',width:1}},
+    hovertemplate:'k=%{x}<br>P(X=k)=%{y:.4f}<extra></extra>'
+  }],{...plotLayout('','Number of Defects (k)','P(X=k)'),
+    annotations:[{x:4,y:binPMF[4]+0.005,text:'P(X=4)=0.2004',showarrow:true,arrowcolor:'#10b981',font:{color:'#10b981',size:10}}]
+  },{responsive:true,displayModeBar:false});
+ 
+  // Poisson λ=3.2
+  const poiK = Array.from({length:12},(_,i)=>i);
+  const poiPMF = poiK.map(k=>poisson_pmf(3.2,k));
+  Plotly.newPlot('ch3-poisson',[{
+    x:poiK, y:poiPMF, type:'bar',
+    marker:{color:poiK.map(k=>k===0||k===2?'#8b5cf6':'rgba(139,92,246,0.5)'),line:{color:'#a78bfa',width:1}},
+    hovertemplate:'k=%{x}<br>P(X=k)=%{y:.4f}<extra></extra>'
+  }],plotLayout('','Faults per Shift (k)','P(X=k)'),{responsive:true,displayModeBar:false});
+ 
+  // Normal μ=0.50, σ=0.07
+  const nx = linspace(0.20,0.80,200);
+  const ny = nx.map(x=>normal_pdf(x,0.50,0.07));
+  const fillX1=[],fillY1=[],fillX2=[],fillY2=[];
+  nx.forEach((x,i)=>{if(x>=0.40&&x<=0.60){fillX1.push(x);fillY1.push(ny[i]);}});
+  nx.forEach((x,i)=>{if(x>=0.65){fillX2.push(x);fillY2.push(ny[i]);}});
+  Plotly.newPlot('ch3-normal',[
+    {x:nx,y:ny,type:'scatter',mode:'lines',line:{color:'#3b82f6',width:2}},
+    {x:[...fillX1,fillX1[fillX1.length-1],...fillX1.slice().reverse()],y:[...fillY1,0,...Array(fillY1.length).fill(0)],fill:'toself',fillcolor:'rgba(16,185,129,0.25)',line:{width:0},hoverinfo:'skip',name:'84.68%'},
+    {x:[...fillX2,fillX2[fillX2.length-1],...fillX2.slice().reverse()],y:[...fillY2,0,...Array(fillY2.length).fill(0)],fill:'toself',fillcolor:'rgba(239,68,68,0.25)',line:{width:0},hoverinfo:'skip',name:'1.62%'},
+  ],{...plotLayout('','Deviation (mm)','Density'),showlegend:true,legend:{font:{color:'#94a3b8',size:10}}},{responsive:true,displayModeBar:false});
+ 
+  // CLT — sampling distribution
+  const cx = linspace(13,17,200);
+  const se = 2.4/Math.sqrt(36);
+  const cy = cx.map(x=>normal_pdf(x,15,se));
+  const fillC=[],fillCY=[];
+  cx.forEach((x,i)=>{if(x>=15.5){fillC.push(x);fillCY.push(cy[i]);}});
+  Plotly.newPlot('ch3-clt',[
+    {x:cx,y:cy,type:'scatter',mode:'lines',line:{color:'#8b5cf6',width:2}},
+    {x:[...fillC,fillC[fillC.length-1],...fillC.slice().reverse()],y:[...fillCY,0,...Array(fillCY.length).fill(0)],fill:'toself',fillcolor:'rgba(245,158,11,0.3)',line:{width:0},hoverinfo:'skip',name:'P(X̄>15.5)=10.56%'}
+  ],{...plotLayout('','Sample Mean Cycle Time (s)','Density'),showlegend:true,
+    shapes:[{type:'line',x0:15.5,x1:15.5,y0:0,y1:1.1,line:{color:'#f59e0b',width:2,dash:'dash'}}],
+    annotations:[{x:15.5,y:1.08,text:'x̄=15.5s',showarrow:false,font:{color:'#f59e0b',size:10}}]
+  },{responsive:true,displayModeBar:false});
+ 
+  // Scatter correlation
+  const tx = [11,14,13,17,15,18], ty = [2.0,2.6,2.4,3.3,2.9,3.6];
+  const mx = tx.reduce((a,b)=>a+b)/tx.length;
+  const my = ty.reduce((a,b)=>a+b)/ty.length;
+  const regLine = [Math.min(...tx)-1, Math.max(...tx)+1].map(x=>my + 0.228*(x-mx));
+  Plotly.newPlot('ch3-scatter',[
+    {x:tx,y:ty,mode:'markers',type:'scatter',marker:{color:'#3b82f6',size:12,line:{color:'#93c5fd',width:1.5}},
+     text:['Obs 1','Obs 2','Obs 3','Obs 4','Obs 5','Obs 6'],hovertemplate:'%{text}<br>Torque: %{x} Nm<br>Vibration: %{y} mm/s<extra></extra>'},
+    {x:[Math.min(...tx)-1,Math.max(...tx)+1],y:regLine,mode:'lines',line:{color:'#10b981',width:2,dash:'dash'},hoverinfo:'skip'}
+  ],{...plotLayout('','Torque X (Nm)','Vibration Y (mm/s)'),
+    annotations:[{x:12,y:3.5,text:'r = 0.998',showarrow:false,font:{color:'#10b981',size:12,weight:'bold'}}]
+  },{responsive:true,displayModeBar:false});
+ 
+  if (MathJax && MathJax.typeset) MathJax.typeset();
+}
+ 
+// ===== CH4 =====
+function initCh4() {
+  updateCI();
+  // CI visualization
+  const mean=50.0087, sd=0.02166, n=200;
+  const z=1.960, se=sd/Math.sqrt(n);
+  const lo=mean-z*se, hi=mean+z*se;
+  Plotly.newPlot('ch4-ci-plot',[
+    {x:[lo,hi],y:[0,0],mode:'lines',line:{color:'#3b82f6',width:8},hoverinfo:'skip'},
+    {x:[mean],y:[0],mode:'markers',marker:{color:'#10b981',size:14,symbol:'diamond'},hovertemplate:`Mean: ${mean.toFixed(4)} mm<extra></extra>`},
+    {x:[50.00],y:[0],mode:'markers',marker:{color:'#f59e0b',size:14,symbol:'cross'},hovertemplate:'Target: 50.00 mm<extra></extra>'}
+  ],{...plotLayout('','Diameter (mm)',''),
+    shapes:[
+      {type:'line',x0:lo,x1:lo,y0:-0.3,y1:0.3,line:{color:'#3b82f6',width:2}},
+      {type:'line',x0:hi,x1:hi,y0:-0.3,y1:0.3,line:{color:'#3b82f6',width:2}}
+    ],
+    annotations:[
+      {x:lo,y:-0.2,text:`${lo.toFixed(5)}`,showarrow:false,font:{color:'#60a5fa',size:10}},
+      {x:hi,y:-0.2,text:`${hi.toFixed(5)}`,showarrow:false,font:{color:'#60a5fa',size:10}},
+      {x:mean,y:0.25,text:`x̄=${mean.toFixed(4)}`,showarrow:false,font:{color:'#10b981',size:10}},
+      {x:50.00,y:-0.25,text:'Target 50.00',showarrow:false,font:{color:'#f59e0b',size:10}}
+    ],
+    yaxis:{visible:false,range:[-0.6,0.6]},
+    xaxis:{range:[49.996,50.015]},
+    height:200
+  },{responsive:true,displayModeBar:false});
+  if (MathJax && MathJax.typeset) MathJax.typeset();
+}
+ 
+function updateCI() {
+  const level = +document.getElementById('ci-slider').value;
+  const n = +document.getElementById('ci-n-slider').value;
+  document.getElementById('ci-level-val').textContent = level;
+  document.getElementById('ci-n-val').textContent = n;
+  const alpha = (100-level)/100;
+  const zMap = {80:1.282,85:1.440,90:1.645,92:1.751,95:1.960,96:2.054,97:2.170,98:2.326,99:2.576};
+  let z = 1.960;
+  const keys = Object.keys(zMap).map(Number).sort((a,b)=>a-b);
+  for (let k of keys) { if (level >= k) z = zMap[k]; }
+  const mean=50.0087, sd=0.02166;
+  const se = sd/Math.sqrt(n);
+  const lo = (mean - z*se).toFixed(5);
+  const hi = (mean + z*se).toFixed(5);
+  document.getElementById('ci-result').textContent = `${level}% CI: [${lo} , ${hi}] mm   (±${(z*se).toFixed(5)} mm)`;
+}
+ 
+// ===== LAB 1 =====
+function initLab1() {
+  loadPDF('pdfs/lab1.pdf','lab1-pdf-info','lab1-canvas');
+  initCh1(); // reuse same data
+  // Replot on lab1 specific elements
+  setTimeout(()=>{
+    Plotly.newPlot('lab1-hist',[{
+      x:shaftData,type:'histogram',nbinsx:10,
+      marker:{color:'rgba(16,185,129,0.7)',line:{color:'#34d399',width:1}}
+    }],{...plotLayout('','Diameter (mm)','Frequency'),
+      shapes:[
+        {type:'rect',x0:49.95,x1:50.05,y0:0,y1:38,fillcolor:'rgba(245,158,11,0.06)',line:{color:'#f59e0b',width:1.5,dash:'dot'}},
+        {type:'line',x0:50.0087,x1:50.0087,y0:0,y1:36,line:{color:'#3b82f6',width:2,dash:'dash'}}
+      ],
+      annotations:[{x:50.0087,y:35,text:'Mean',showarrow:false,font:{color:'#3b82f6',size:10}}]
+    },{responsive:true,displayModeBar:false});
+    Plotly.newPlot('lab1-box',[{
+      y:shaftData,type:'box',boxmean:true,
+      marker:{color:'rgba(16,185,129,0.5)'},line:{color:'#10b981'},
+      name:'200 Measurements'
+    }],{...plotLayout('','','Diameter (mm)'),
+      shapes:[
+        {type:'line',x0:-0.5,x1:0.5,y0:50.05,y1:50.05,line:{color:'#ef4444',width:2,dash:'dash'}},
+        {type:'line',x0:-0.5,x1:0.5,y0:49.95,y1:49.95,line:{color:'#ef4444',width:2,dash:'dash'}},
+        {type:'line',x0:-0.5,x1:0.5,y0:50.00,y1:50.00,line:{color:'#f59e0b',width:1.5,dash:'dot'}}
+      ],
+      annotations:[
+        {x:0.48,y:50.05,text:'UCL 50.05',showarrow:false,font:{color:'#ef4444',size:9}},
+        {x:0.48,y:49.95,text:'LCL 49.95',showarrow:false,font:{color:'#ef4444',size:9}},
+        {x:0.48,y:50.00,text:'Target',showarrow:false,font:{color:'#f59e0b',size:9}}
+      ],showlegend:true,legend:{font:{color:'#94a3b8',size:10}}
+    },{responsive:true,displayModeBar:false});
+  },200);
+}
+ 
+// ===== LAB 2 =====
+function initLab2() {
+  loadPDF('pdfs/lab2.pdf','lab2-pdf-info','');
+  const cats = ['P(Normal)','P(Warning)','P(Fail|Warn)','P(False Warn)','Reliability'];
+  const vals = [0.96,0.0848,0.434,0.048,0.434];
+  const colors = ['#10b981','#3b82f6','#ef4444','#f59e0b','#8b5cf6'];
+  Plotly.newPlot('lab2-bar',[{
+    x:cats,y:vals,type:'bar',
+    marker:{color:colors.map(c=>c+'99'),line:{color:colors,width:2}},
+    text:vals.map(v=>(v*100).toFixed(1)+'%'),textposition:'outside',
+    hovertemplate:'%{x}: %{y:.4f}<extra></extra>'
+  }],{...plotLayout('','','Probability'),
+    yaxis:{range:[0,1.1],gridcolor:'rgba(255,255,255,0.05)'},
+    font:{color:'#94a3b8',size:11}
+  },{responsive:true,displayModeBar:false});
+}
+ 
+// ===== LAB 3 =====
+function initLab3() {
+  loadPDF('pdfs/lab3.pdf','lab3-pdf-info','');
+  const binK=Array.from({length:12},(_,i)=>i);
+  const binP=binK.map(k=>binom_pmf(80,k,0.05));
+  const poiK=Array.from({length:10},(_,i)=>i);
+  const poiP=poiK.map(k=>poisson_pmf(3.2,k));
+  Plotly.newPlot('lab3-combined',[
+    {x:binK,y:binP,type:'bar',name:'Binomial (n=80,p=0.05)',marker:{color:'rgba(59,130,246,0.6)'},yaxis:'y'},
+    {x:poiK,y:poiP,type:'bar',name:'Poisson (λ=3.2)',marker:{color:'rgba(139,92,246,0.6)'},yaxis:'y2'}
+  ],{...plotLayout('','k','Probability'),
+    barmode:'group',
+    yaxis:{title:{text:'Binomial P(X=k)'},gridcolor:'rgba(255,255,255,0.04)'},
+    yaxis2:{title:{text:'Poisson P(X=k)'},overlaying:'y',side:'right',gridcolor:'rgba(255,255,255,0.02)'},
+    showlegend:true,legend:{font:{color:'#94a3b8',size:10},x:0.5,y:1}
+  },{responsive:true,displayModeBar:false});
+}
+ 
+// ===== PDF LOADER =====
+function loadPDF(url, infoId, canvasId) {
+  const infoEl = document.getElementById(infoId);
+  if (!infoEl) return;
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  pdfjsLib.getDocument(url).promise.then(pdf => {
+    infoEl.innerHTML = `<div class="pdf-info">✓ PDF loaded — Pages: ${pdf.numPages} | ${url}</div>`;
+    if (canvasId) {
+      pdf.getPage(1).then(page => {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
+        canvas.style.display = 'block';
+        const vp = page.getViewport({scale:1.5});
+        canvas.height = vp.height; canvas.width = vp.width;
+        page.render({canvasContext:canvas.getContext('2d'),viewport:vp});
+      });
+    }
+  }).catch(() => {
+    infoEl.innerHTML = `<div class="pdf-warn">⚠ Please place <strong>${url.split('/').pop()}</strong> in the <code>pdfs/</code> folder alongside this HTML file. The PDF viewer will appear automatically once the file is available.</div>`;
+  });
+}
+ 
+// ===== MATH HELPERS =====
+function binom_pmf(n,k,p) {
+  return comb(n,k)*Math.pow(p,k)*Math.pow(1-p,n-k);
+}
+function comb(n,k){
+  if(k>n)return 0; if(k===0||k===n)return 1;
+  let r=1;
+  for(let i=0;i<k;i++){r=r*(n-i)/(i+1);}
+  return r;
+}
+function poisson_pmf(lam,k){
+  return Math.exp(-lam)*Math.pow(lam,k)/factorial(k);
+}
+function factorial(n){return n<=1?1:n*factorial(n-1);}
+function normal_pdf(x,mu,sigma){
+  return (1/(sigma*Math.sqrt(2*Math.PI)))*Math.exp(-0.5*Math.pow((x-mu)/sigma,2));
+}
+function linspace(a,b,n){
+  return Array.from({length:n},(_,i)=>a+(b-a)*i/(n-1));
+}
+ 
+// ===== LAB 4 =====
+function initLab4() {
+  loadPDF('pdfs/lab4.pdf','lab4-pdf-info','');
+ 
+  // Dataset 1: Robotic Welding Cycle Times
+  const d1 = [12.3,11.8,12.5,12.1,11.9,12.4,12.0,12.2,11.7,12.6,12.1,12.3,11.8,12.0,12.5,12.2,11.9,12.4,12.1,12.3];
+  const m1 = d1.reduce((a,b)=>a+b)/d1.length;
+  const s1 = Math.sqrt(d1.reduce((a,b)=>a+Math.pow(b-m1,2),0)/19);
+  const se1 = s1/Math.sqrt(20);
+  const ci1lo = m1 - 2.093*se1, ci1hi = m1 + 2.093*se1;
+ 
+  Plotly.newPlot('lab4-d1-hist',[
+    {x:d1, type:'histogram', nbinsx:8,
+     marker:{color:'rgba(59,130,246,0.65)', line:{color:'#60a5fa',width:1}},
+     name:'Cycle Times', hovertemplate:'Bin: %{x}s<br>Count: %{y}<extra></extra>'},
+  ],{...plotLayout('','Cycle Time (s)','Frequency'),
+    shapes:[
+      {type:'line',x0:m1,x1:m1,y0:0,y1:5,line:{color:'#10b981',width:2,dash:'dash'}},
+      {type:'line',x0:12.0,x1:12.0,y0:0,y1:5,line:{color:'#f59e0b',width:2,dash:'dot'}},
+      {type:'rect',x0:ci1lo,x1:ci1hi,y0:0,y1:5,fillcolor:'rgba(59,130,246,0.08)',line:{color:'#3b82f6',width:1.5,dash:'dash'}}
+    ],
+    annotations:[
+      {x:m1,y:4.7,text:`x̄=${m1.toFixed(3)}`,showarrow:false,font:{color:'#10b981',size:10}},
+      {x:12.0,y:4.2,text:'Target 12.0',showarrow:false,font:{color:'#f59e0b',size:10}},
+      {x:ci1lo,y:2,text:`CI: [${ci1lo.toFixed(3)}, ${ci1hi.toFixed(3)}]`,showarrow:false,font:{color:'#3b82f6',size:9},xanchor:'left'}
+    ]
+  },{responsive:true,displayModeBar:false});
+ 
+  // Dataset 2: Filling volumes
+  const d2 = [501.2,500.8,502.1,499.5,501.5,500.3,501.8,500.0,502.3,499.7,501.0,500.6,501.9,500.2,501.4,500.9,501.7,500.1,501.3,500.5,501.6,500.4,501.1,500.7,501.2];
+  const m2 = d2.reduce((a,b)=>a+b)/d2.length;
+  const s2 = Math.sqrt(d2.reduce((a,b)=>a+Math.pow(b-m2,2),0)/24);
+  const se2 = s2/Math.sqrt(25);
+  const ci2lo = m2-2.064*se2, ci2hi = m2+2.064*se2;
+ 
+  const fillRight = linspace(m2,504,100), fillRightY = fillRight.map(x=>normal_pdf(x,m2,s2));
+  Plotly.newPlot('lab4-d2-hist',[
+    {x:d2, type:'histogram', nbinsx:10,
+     marker:{color:'rgba(245,158,11,0.6)',line:{color:'#fcd34d',width:1}},
+     name:'Fill Volumes', hovertemplate:'%{x} mL: %{y} bottles<extra></extra>'},
+  ],{...plotLayout('','Volume (mL)','Frequency'),
+    shapes:[
+      {type:'line',x0:m2,x1:m2,y0:0,y1:7,line:{color:'#f59e0b',width:2,dash:'dash'}},
+      {type:'line',x0:500.0,x1:500.0,y0:0,y1:7,line:{color:'#10b981',width:2,dash:'dot'}},
+      {type:'rect',x0:500.0,x1:m2,y0:0,y1:7,fillcolor:'rgba(239,68,68,0.06)',line:{width:0}}
+    ],
+    annotations:[
+      {x:m2+0.05,y:6.5,text:`x̄=${m2.toFixed(3)} mL`,showarrow:false,font:{color:'#f59e0b',size:10},xanchor:'left'},
+      {x:500.0,y:5.5,text:'Target 500.0',showarrow:false,font:{color:'#10b981',size:10},xanchor:'right'},
+      {x:500.476,y:1.5,text:`Overfill: ${(m2-500).toFixed(3)} mL`,showarrow:false,font:{color:'#ef4444',size:9}}
+    ]
+  },{responsive:true,displayModeBar:false});
+ 
+  // Dataset 3: CNC bore diameters
+  const d3 = [25.02,24.98,25.01,25.03,24.99,25.00,25.04,24.97,25.01,25.02,25.00,24.99,25.03,25.01,24.98,25.02,25.00,24.97,25.01,25.03,25.02,24.99,25.00,25.01,24.98,25.03,25.02,25.00,24.99,25.01];
+  const m3 = d3.reduce((a,b)=>a+b)/d3.length;
+  const se3 = 0.05/Math.sqrt(30);
+  const ci3lo = m3-1.96*se3, ci3hi = m3+1.96*se3;
+  const ci3lo99 = m3-2.576*se3, ci3hi99 = m3+2.576*se3;
+ 
+  Plotly.newPlot('lab4-d3-scatter',[
+    {x:d3.map((_,i)=>i+1), y:d3, mode:'markers', type:'scatter',
+     marker:{color:'rgba(139,92,246,0.7)',size:9,line:{color:'#a78bfa',width:1}},
+     name:'Measurements', hovertemplate:'Obs %{x}: %{y:.4f} mm<extra></extra>'},
+    {x:[1,30], y:[m3,m3], mode:'lines', line:{color:'#10b981',width:2,dash:'dash'}, name:`x̄=${m3.toFixed(4)}`},
+    {x:[1,30], y:[25.00,25.00], mode:'lines', line:{color:'#f59e0b',width:2,dash:'dot'}, name:'Target 25.00'},
+    {x:[1,30,30,1], y:[ci3lo,ci3lo,ci3hi,ci3hi], fill:'toself', fillcolor:'rgba(59,130,246,0.08)', line:{width:0}, hoverinfo:'skip', name:'95% CI'},
+    {x:[1,30,30,1], y:[ci3lo99,ci3lo99,ci3hi99,ci3hi99], fill:'toself', fillcolor:'rgba(59,130,246,0.04)', line:{width:0,dash:'dot'}, hoverinfo:'skip', name:'99% CI'}
+  ],{...plotLayout('','Observation #','Diameter (mm)'),
+    showlegend:true, legend:{font:{color:'#94a3b8',size:10}},
+    yaxis:{range:[24.955,25.055]}
+  },{responsive:true,displayModeBar:false});
+ 
+  // Comparison chart: deviation from target with CI
+  const datasets = ['Welding<br>(12.0 s)','Filling<br>(500 mL)','CNC<br>(25.00 mm)'];
+  const deviations = [m1-12.0, m2-500.0, m3-25.00];
+  const margins = [2.093*se1, 2.064*se2, 1.96*se3];
+  const pvals = [0.0148, 0.000001, 0.559];
+  const colors_d = ['#3b82f6','#f59e0b','#8b5cf6'];
+  const decisions = ['Reject H₀','Reject H₀','Fail to Reject'];
+  const decColors = ['#ef4444','#ef4444','#10b981'];
+ 
+  Plotly.newPlot('lab4-comparison',[
+    {x:datasets, y:deviations, error_y:{type:'data',array:margins,visible:true,color:'rgba(255,255,255,0.5)',thickness:2,width:10},
+     type:'bar',
+     marker:{color:colors_d.map(c=>c+'99'), line:{color:colors_d,width:2}},
+     text:decisions, textposition:'outside',
+     textfont:{color:decColors, size:11},
+     hovertemplate:'%{x}<br>Deviation: %{y:.4f}<br>±CI: %{error_y.array:.4f}<extra></extra>'},
+  ],{...plotLayout('','Dataset','Deviation from Target (natural units)'),
+    shapes:[{type:'line',x0:-0.5,x1:2.5,y0:0,y1:0,line:{color:'#ef4444',width:1.5,dash:'dash'}}],
+    annotations:[{x:2.5,y:0.01,text:'Target',showarrow:false,font:{color:'#ef4444',size:10}}],
+    yaxis:{gridcolor:'rgba(255,255,255,0.05)'}
+  },{responsive:true,displayModeBar:false});
+ 
+  if (MathJax && MathJax.typeset) MathJax.typeset();
+}
+ 
+ 
+window.addEventListener('load',()=>{
+  if(MathJax&&MathJax.typeset) MathJax.typeset();
+  // Intro page — no graphs needed
+});
+</script>
+</body>
+</html>
