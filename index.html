@@ -545,7 +545,6 @@ input[type=range]{width:100%;accent-color:var(--accent);}
     </div>
   </div>
   <div id="lab1-pdf-info"></div>
-  <canvas id="lab1-canvas" class="pdf-canvas" style="display:none;"></canvas>
  
   <div class="card">
     <h2>Problem Statement</h2>
@@ -1111,7 +1110,7 @@ function updateCI() {
  
 // ===== LAB 1 =====
 function initLab1() {
-  loadPDF('pdfs/lab1.pdf','lab1-pdf-info','lab1-canvas');
+  loadPDF('pdfs/lab1.pdf','lab1-pdf-info','');
   initCh1(); // reuse same data
   // Replot on lab1 specific elements
   setTimeout(()=>{
