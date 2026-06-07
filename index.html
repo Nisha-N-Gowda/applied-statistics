@@ -1184,7 +1184,7 @@ function loadPDF(url, infoId, canvasId) {
   if (!infoEl) return;
   pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
   pdfjsLib.getDocument(url).promise.then(pdf => {
-    infoEl.innerHTML = `<div class="pdf-info">✓ PDF loaded — Pages: ${pdf.numPages} | ${url}</div>`;
+    infoEl.innerHTML = '';
     if (canvasId) {
       pdf.getPage(1).then(page => {
         const canvas = document.getElementById(canvasId);
